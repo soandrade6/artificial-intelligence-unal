@@ -44,9 +44,9 @@ RULEBLOCK No1
 
         RULE 1 : IF (humedad IS baja) AND (intensidad IS baja) AND (volumen IS pequeno) THEN temperatura IS baja;
         RULE 2 : IF (humedad IS media) AND (intensidad IS baja) AND (volumen IS pequeno) THEN temperatura IS baja;
-        RULE 3 : IF (humdad IS baja) AND (intensidad IS alta) AND (volumen IS grande) THEN temperatura IS alta;
+        RULE 3 : IF (humedad IS baja) AND (intensidad IS alta) AND (volumen IS grande) THEN temperatura IS alta;
         RULE 4 : IF (humedad IS alta) AND (intensidad IS alta) AND (volumen IS grande) THEN temperatura IS alta;
-        RULE 5 : IF (humdad IS media) AND (intensidad IS alta) AND (volumen IS mediano) THEN temperatura IS media;
+        RULE 5 : IF (humedad IS media) AND (intensidad IS alta) AND (volumen IS mediano) THEN temperatura IS media;
 
 END_RULEBLOCK
 END_FUNCTION_BLOCK

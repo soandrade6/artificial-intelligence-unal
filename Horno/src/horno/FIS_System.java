@@ -12,7 +12,7 @@ package horno;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 public class FIS_System {
-    final private String path_Fis = "src/horno/FIS_horno";
+    final private String path_Fis = "src/horno/FIS_horno.fcl";
     final private FIS fis_var;
     
     public FIS_System() {
