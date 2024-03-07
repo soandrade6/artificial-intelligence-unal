@@ -16,6 +16,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        Interfaz inter = new Interfaz();
+        inter.setVisible(true);
+        
+        /*
         Scanner scan = new Scanner(System.in);
         FIS_System fis = new FIS_System();
 
@@ -32,6 +37,7 @@ public class Main {
 
         System.out.println(result);
         System.out.println(fis.get_CD());
+        */
     }
     
 }

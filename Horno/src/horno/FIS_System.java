@@ -22,7 +22,7 @@ public class FIS_System {
         }
     }
     
-    public String evaluar(double humedad, double intensidad, double volumen){
+    public String evaluar(Integer humedad, Integer intensidad, Integer volumen){
         this.fis_var.setVariable("humedad", humedad);
         this.fis_var.setVariable("intensidad", intensidad);
         this.fis_var.setVariable("volumen" ,volumen);
