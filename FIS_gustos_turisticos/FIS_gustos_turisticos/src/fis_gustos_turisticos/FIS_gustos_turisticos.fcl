@@ -1,0 +1,87 @@
+FUNCTION_BLOCK turismo
+
+VAR_INPUT
+    nivel_de_presupuesto: REAL; RANGE := (0 .. 10);
+    clima: REAL; RANGE := (-10 .. 40);
+    popularidad_historica: REAL; RANGE := (0 .. 100);
+END_VAR
+
+VAR_OUTPUT
+        tipo_de_destino : REAL; RANGE := (0 .. 100);
+        alojamiento_recomendado : REAL; RANGE := (0 .. 100);
+END_VAR
+
+FUZZIFY nivel_de_presupuesto
+        TERM bajo := trape 0 0 1.25 2.5;
+        TERM medio := trape 2 3 5 6;
+        TERM alto := trape 5 5.5 7.5 8;
+        TERM muy_alto := trape 7 8 10 10;
+END_FUZZIFY
+
+FUZZIFY clima
+        TERM frio := trape -10 -10 0 5;
+        TERM templado := trian 0 7.5 15;
+        TERM calido := trian 10 17.5 25;
+        TERM caluroso := trape 20 25 40 40;
+END_FUZZIFY
+
+FUZZIFY popularidad_historica
+        TERM baja := trape 0 0 15 30;
+        TERM media := trian 20 40 60;
+        TERM alta := trian 40 60 80;
+        TERM muy_alta := trape 70 80 100 100;
+
+END_FUZZIFY
+
+DEFUZZIFY tipo_de_destino
+    TERM playa := trape 0 0 15 25;
+    TERM montana := trian 20 35 50;
+    TERM ciudad := trian 40 55 70;
+    TERM rural := trape 60 75 100 100;
+
+    METHOD : COG;
+    DEFAULT := 0;
+
+END_DEFUZZIFY
+
+DEFUZZIFY alojamiento_recomendado
+    TERM camping := trape 0 0 9 15;
+    TERM hostal := trian 10 20 30;
+    TERM casa_rural := trian 25 35 45;
+    TERM apartamento_vacacional := trian 40 50 60;
+    TERM hotel_de_lujo := trian 55 65 75;
+    TERM resort := trape 70 80 100 100;
+
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+        AND : MIN;
+        ACT : MIN;
+        ACCU : MAX;
+
+        RULE 1 : IF (nivel_de_presupuesto is bajo) and (clima is frio) then  tipo_de_destino is rural, alojamiento_recomendado is casa_rural ;
+        RULE 2 : IF (nivel_de_presupuesto is medio) and (clima is templado) then  tipo_de_destino is ciudad, alojamiento_recomendado is apartamento_vacacional ;
+        RULE 3 : IF (nivel_de_presupuesto is alto) and (clima is calido) then  tipo_de_destino is playa, alojamiento_recomendado is resort ;
+        RULE 4 : IF (nivel_de_presupuesto is muy_alto) and (popularidad_historica is muy_alta) then  tipo_de_destino is ciudad, alojamiento_recomendado is apartamento_vacacional ;
+        RULE 5 : IF (clima is templado) and (popularidad_historica is alta) then  tipo_de_destino is montana, alojamiento_recomendado is camping ;
+        RULE 6 :  IF (nivel_de_presupuesto is bajo) and (clima is caluroso) then  tipo_de_destino is playa, alojamiento_recomendado is hostal ;
+        RULE 7 : IF (nivel_de_presupuesto is medio) and (popularidad_historica is media) then  tipo_de_destino is ciudad, alojamiento_recomendado is camping ;
+        RULE 8 : IF (nivel_de_presupuesto is alto) and (clima is templado) then  tipo_de_destino is ciudad, alojamiento_recomendado is casa_rural ;
+        RULE 9 : IF (clima is frio) and (popularidad_historica is baja) then  tipo_de_destino is rural, alojamiento_recomendado is camping ;
+        RULE 10: IF (nivel_de_presupuesto is medio) and (clima is caluroso) then  tipo_de_destino is playa, alojamiento_recomendado is resort ;
+        RULE 11 : IF (nivel_de_presupuesto is bajo) and (popularidad_historica is alta) then  tipo_de_destino is ciudad, alojamiento_recomendado is apartamento_vacacional ;
+        RULE 12 : IF (clima is templado) and (popularidad_historica is baja) then  tipo_de_destino is montana, alojamiento_recomendado is casa_rural ;
+        RULE 13 : IF (nivel_de_presupuesto is alto) and (clima is frio) then  tipo_de_destino is rural, alojamiento_recomendado is hostal ;
+        RULE 14 : IF (nivel_de_presupuesto is muy_alto) and (clima is calido) then  tipo_de_destino is playa, alojamiento_recomendado is resort ;
+        RULE 15 : IF (clima is caluroso) and (popularidad_historica is muy_alta) then  tipo_de_destino is playa, alojamiento_recomendado is casa_rural ;
+        RULE 16 : IF (nivel_de_presupuesto IS bajo) OR (clima IS frio) OR (popularidad_historica  IS baja) THEN  tipo_de_destino IS rural, alojamiento_recomendado IS camping ;
+        RULE 17 : IF (nivel_de_presupuesto IS medio) OR (clima IS frio) OR (popularidad_historica  IS media) THEN  tipo_de_destino IS montana,  alojamiento_recomendado IS casa_rural ;
+        RULE 18 : IF (nivel_de_presupuesto IS medio) OR (clima IS templado) OR (popularidad_historica IS alta) THEN  tipo_de_destino IS ciudad,  alojamiento_recomendado IS hostal ;
+        RULE 19 : IF (nivel_de_presupuesto IS alto) OR (clima IS calido) OR (popularidad_historica IS alta) THEN  tipo_de_destino IS playa, alojamiento_recomendado IS apartamento_vacacional ;
+        RULE 20 : IF (nivel_de_presupuesto IS alto) OR (clima IS caluroso) OR (popularidad_historica IS muy_alta) THEN  tipo_de_destino IS playa, alojamiento_recomendado IS hotel_de_lujo ;
+        RULE 21 : IF (nivel_de_presupuesto IS muy_alto) OR (clima IS caluroso) OR (popularidad_historica IS muy_alta) THEN  tipo_de_destino IS playa,  alojamiento_recomendado IS resort ;
+
+END_RULEBLOCK
+END_FUNCTION_BLOCK
